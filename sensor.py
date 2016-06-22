@@ -28,16 +28,26 @@ Returns:
 Also blinks an led each time it is polled.
 """
 
-from synapse.evalBase import *
-from ATmega128RFA1_sensors import *
-from synapse.ATmega128RFA1_utils import *
+from snappyatmega.sensors import *
+from snappyatmega.utils import adcRefSelect
+
+GPIO_12 = 25
+GPIO_18_ADC = 7
+GPIO_11_ADC = 0
+
+# Setting this to none will disable the blink
+# LED_PIN = None
+
+# 6 is GPIO_1 for SN-171 protoboards and SN-132 paddleboards,
+# and the green led on SS200 / SN220 SNAPsticks.
+LED_PIN = 6
 
 NUM_POLLS = 0
 
-thermisterAdcChannel = GPIO_TO_ADC_LIST[18]
+thermisterAdcChannel = GPIO_18_ADC
 
 photoCellPin = GPIO_12
-photoCellAdcChannel = GPIO_TO_ADC_LIST[11]
+photoCellAdcChannel = GPIO_11_ADC
 requiredRange = 100
 photoMax = 0x0000
 photoMin = 0x03FF
@@ -46,7 +56,7 @@ photoMin = 0x03FF
 def data():
     """Return the formatted data string"""
     # First, blink the LED
-    blinkLed(1000)
+    pulsePin(LED_PIN, 1000, True)
 
     # Get the individual values
     num_polls = _get_poll_counter()
@@ -66,7 +76,10 @@ def data():
 
 @setHook(HOOK_STARTUP)
 def _on_startup():
-    detectEvalBoards()
+    # Initialize the LED
+    setPinDir(LED_PIN, True)
+    writePin(LED_PIN, False)
+
     _reset_poll_counter()
     _init_ext_sensors()
 
