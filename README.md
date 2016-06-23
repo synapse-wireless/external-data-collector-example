@@ -6,7 +6,7 @@ This example collects data from two sensors that are internal to SNAP modules (t
 that are included in the EK2100 development kit. The [snappyatmega library](https://github.com/synapse-wireless/snappy-atmega) will 
 handle the details of reading the internal sensors, while custom SNAPpy code will be used to read a light sensor and thermistor.
 
-Please follow the [Data Collection with External Sensors]() tutorial for more info on installing and running this example.
+Please follow the [Data Collection with External Sensors](http://data-collector.readthedocs.io/en/latest/examples/example2.html) tutorial for more info on installing and running this example.
 
 ## License
 
